@@ -1,0 +1,31 @@
+// A shared drive: teams, an organization, folders and documents.
+// Documents in a restricted folder are hidden from contractors, however
+// they got access.
+
+definition user {}
+
+definition team {
+	relation member: user | team#member
+}
+
+definition organization {
+	relation member: user | team#member
+	relation contractor: user | team#member
+}
+
+definition folder {
+	relation parent: folder
+	relation viewer: user | team#member | organization#member
+	relation editor: user | team#member
+	permission edit = editor + parent->edit
+	permission view = viewer + edit + parent->view
+}
+
+definition document {
+	relation parent: folder
+	relation viewer: user | user:* | team#member
+	relation editor: user | team#member
+	relation restricted: organization
+	permission edit = editor + parent->edit
+	permission view = (viewer + edit + parent->view) - restricted->contractor
+}

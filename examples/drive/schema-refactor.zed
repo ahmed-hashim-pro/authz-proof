@@ -1,0 +1,32 @@
+// A shared drive: teams, an organization, folders and documents.
+// Refactor (PR #212): "only explicit viewers need the contractor check;
+// folder access is already scoped to staff". It is not: the company
+// folder is shared with the whole organization, contractors included.
+
+definition user {}
+
+definition team {
+	relation member: user | team#member
+}
+
+definition organization {
+	relation member: user | team#member
+	relation contractor: user | team#member
+}
+
+definition folder {
+	relation parent: folder
+	relation viewer: user | team#member | organization#member
+	relation editor: user | team#member
+	permission edit = editor + parent->edit
+	permission view = viewer + edit + parent->view
+}
+
+definition document {
+	relation parent: folder
+	relation viewer: user | user:* | team#member
+	relation editor: user | team#member
+	relation restricted: organization
+	permission edit = editor + parent->edit
+	permission view = (viewer - restricted->contractor) + edit + parent->view
+}

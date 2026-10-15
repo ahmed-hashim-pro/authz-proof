@@ -1,0 +1,4 @@
+// What PR #213 is meant to change (SEC-142): contractors may edit the
+// engineering folder and the documents in it. Nothing else.
+folder:eng#{editor,edit}@user:{bob,carol}                 SEC-142: contractors edit engineering
+document:{roadmap,design-review}#edit@user:{bob,carol}    SEC-142: contractors edit engineering

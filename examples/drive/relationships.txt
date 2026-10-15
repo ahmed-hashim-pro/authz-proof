@@ -1,0 +1,37 @@
+// People and teams
+team:hr#member@user:alice
+team:finance#member@user:dana
+team:eng#member@user:erin
+team:eng#member@user:frank
+team:contractors#member@user:bob
+team:contractors#member@user:carol
+team:staff#member@team:hr#member
+team:staff#member@team:finance#member
+team:staff#member@team:eng#member
+
+// The organization: staff and contractors are both members
+organization:acme#member@team:staff#member
+organization:acme#member@team:contractors#member
+organization:acme#contractor@team:contractors#member
+
+// Folders
+folder:company#viewer@organization:acme#member
+folder:hr#parent@folder:company
+folder:hr#editor@team:hr#member
+folder:finance#parent@folder:company
+folder:finance#editor@team:finance#member
+folder:eng#parent@folder:company
+folder:eng#editor@team:eng#member
+
+// Documents
+document:handbook#parent@folder:company
+document:payroll#parent@folder:hr
+document:payroll#restricted@organization:acme
+document:offer-letters#parent@folder:hr
+document:offer-letters#restricted@organization:acme
+document:budget#parent@folder:finance
+document:budget#restricted@organization:acme
+document:roadmap#parent@folder:eng
+document:design-review#parent@folder:eng
+document:design-review#viewer@team:contractors#member
+document:status-page#viewer@user:*
