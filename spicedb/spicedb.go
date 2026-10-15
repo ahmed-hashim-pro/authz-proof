@@ -10,6 +10,7 @@ import (
 	"io"
 	"net/http"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 
@@ -231,8 +232,13 @@ func (s Summary) String() string {
 	}
 	if s.BothRefused+s.OnlyTheyRefused+len(s.OnlyWeRefused) > 0 {
 		out += fmt.Sprintf("\n  schemas refused by both: %d, by SpiceDB only: %d", s.BothRefused, s.OnlyTheyRefused)
-		for reason, n := range s.OnlyWeRefused {
-			out += fmt.Sprintf("\n  refused by authz-proof only (%s): %d", reason, n)
+		var reasons []string
+		for reason := range s.OnlyWeRefused {
+			reasons = append(reasons, reason)
+		}
+		sort.Strings(reasons)
+		for _, reason := range reasons {
+			out += fmt.Sprintf("\n  refused by authz-proof only (%s): %d", reason, s.OnlyWeRefused[reason])
 		}
 	}
 	for _, e := range s.Examples {
