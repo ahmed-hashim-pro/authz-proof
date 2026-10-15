@@ -113,6 +113,9 @@ examples/drive/schema-no-parens.zed + examples/drive/relationships.txt: 966 chec
   refused by authz-proof only (wildcard through a subject set): 1
 ```
 
+Between runs the last line reads 1 or 2, and the "both" count moves by
+one with it; the second finding below explains why.
+
 It also writes every schema authz-proof refuses, to see if SpiceDB
 refuses it too. SpiceDB never refused a schema that authz-proof
 accepted. The schemas only authz-proof refuses are covered under
